@@ -1,10 +1,12 @@
 
 
+let currentXLabelDateTime = null
+
 var color = Chart.helpers.color;
 window.config = {
   type: 'line',
   data: {
-    labels: ['2019-10-24 00:00','2019-10-25 00:00','2019-10-26 00:00','2019-10-27 00:00','2019-10-28 00:00','2019-10-29 00:00','2019-10-30 00:00','2019-10-31 00:00','2019-11-01 00:00','2019-11-02 00:00'],
+    // labels: ['2019-10-24 00:00','2019-10-25 00:00','2019-10-26 00:00','2019-10-27 00:00','2019-10-28 00:00','2019-10-29 00:00','2019-10-30 00:00','2019-10-31 00:00','2019-11-01 00:00','2019-11-02 00:00'],
     datasets: [
       
         
@@ -174,9 +176,24 @@ window.config = {
     scales: {
       xAxes: [{
         type: 'time',
+        ticks: {
+          major: {
+            enabled: true,
+            fontStyle: 'bold'
+          },
+          callback: function(value, index, values) {
+            let newXLabelDateTime = moment(values[index].value).format("YYYY-MM-DD");
+
+            if (newXLabelDateTime != currentXLabelDateTime) {
+              currentXLabelDateTime = newXLabelDateTime;
+              console.log({currentXLabelDateTime: currentXLabelDateTime})
+              return(currentXLabelDateTime);
+            }
+          }
+        },
         time: {
-          parser: timeFormat,
-          // round: 'day'
+          parser: 'MM/DD/YYYY HH:mm',
+          // round: 'day',
           tooltipFormat: 'll HH:mm'
         },
         scaleLabel: {

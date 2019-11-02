@@ -28,11 +28,13 @@ datetimes = Dir.glob("*.csv").flat_map do |path|
 end.uniq.sort.map {|d| "'#{d}'" }
 %>
 
+let currentXLabelDateTime = null
+
 var color = Chart.helpers.color;
 window.config = {
   type: 'line',
   data: {
-    labels: [<%= datetimes.join(',') %>],
+    // labels: [<%= datetimes.join(',') %>],
     datasets: [
       <% Dir.glob("*.csv").each_with_index do |path, index| %>
         <% name, _rest = path.split('.').first %>
@@ -83,9 +85,24 @@ window.config = {
     scales: {
       xAxes: [{
         type: 'time',
+        ticks: {
+          major: {
+            enabled: true,
+            fontStyle: 'bold'
+          },
+          callback: function(value, index, values) {
+            let newXLabelDateTime = moment(values[index].value).format("YYYY-MM-DD");
+
+            if (newXLabelDateTime != currentXLabelDateTime) {
+              currentXLabelDateTime = newXLabelDateTime;
+              console.log({currentXLabelDateTime: currentXLabelDateTime})
+              return(currentXLabelDateTime);
+            }
+          }
+        },
         time: {
-          parser: timeFormat,
-          // round: 'day'
+          parser: 'MM/DD/YYYY HH:mm',
+          // round: 'day',
           tooltipFormat: 'll HH:mm'
         },
         scaleLabel: {
