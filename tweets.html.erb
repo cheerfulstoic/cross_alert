@@ -7,14 +7,15 @@
       datetime = DateTime.parse(row[2])
       [
         datetime.strftime("stamp-#{name}-%Y%m%d%H00"),
+        name,
         datetime.strftime("%Y-%m-%d %H:00"),
       ]
     end
   %>
 
-  <% grouped_data.each do |(id, datetime_string), rows| %>
+  <% grouped_data.each do |(id, name, datetime_string), rows| %>
     <div class="tweet-block" id="<%= id %>" style="display: none">
-      <%= datetime_string %>
+      <h1><%= name %> - <%= datetime_string %></h1>
       <% rows.each do |id, _, _| %>
         <div class="tweet" id="tweet" tweetId="<%= id %>"></div>
       <% end %>
