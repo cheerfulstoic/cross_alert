@@ -1,0 +1,65 @@
+<%
+    require 'time'
+    require 'csv'
+%>
+
+var color = Chart.helpers.color;
+window.config = {
+  type: 'line',
+  data: {
+    datasets: [
+      <% Dir.glob("*.csv").each_with_index do |path, index| %>
+        {
+          label: <%= path.inspect %>,
+          // backgroundColor: color(window.chartColors.green).alpha(0.5).rgbString(),
+          backgroundColor: function () { debugger },
+          // borderColor: window.chartColors.green,
+          fill: false,
+          data: [
+              <%
+                data = CSV.parse(File.read(path))
+                grouped_data = data.group_by do |row|
+                  DateTime.parse(row[2]).strftime("%Y-%m-%d %H:00")
+                end
+
+                hour_counts = grouped_data.each_with_object({}) do |(hour_string, array), result|
+                  result[hour_string] = array.size
+                end
+              %>
+
+              <%=
+                hour_counts.map do |hour_string, count|
+                  "{ x: moment(#{hour_string.inspect}), y: #{count}}"
+                end.join(',')
+              %>
+          ],
+        },
+      <% end %>
+    ]
+  },
+  options: {
+    title: {
+      text: 'Chart.js Time Scale'
+    },
+    scales: {
+      xAxes: [{
+        type: 'time',
+        time: {
+          parser: timeFormat,
+          // round: 'day'
+          tooltipFormat: 'll HH:mm'
+        },
+        scaleLabel: {
+          display: true,
+          labelString: 'Date'
+        }
+      }],
+      yAxes: [{
+        scaleLabel: {
+          display: true,
+          labelString: 'value'
+        }
+      }]
+    },
+  }
+};
