@@ -2,7 +2,6 @@
 
 let currentXLabelDateTime = null
 
-var color = Chart.helpers.color;
 window.config = {
   type: 'line',
   data: {
