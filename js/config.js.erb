@@ -37,7 +37,10 @@ window.config = {
     // labels: [<%= datetimes.join(',') %>],
     datasets: [
       <% Dir.glob("*.csv").each_with_index do |path, index| %>
-        <% name, _rest = path.split('.').first %>
+        <%
+          name, _rest = path.split('.').first
+          name = name.gsub(' ', '-')
+        %>
         {
           label: <%= name.inspect %>,
           fill: '#<%= colors[index] %>',
@@ -68,11 +71,21 @@ window.config = {
       position: 'bottom'
     },
     onClick: function (context, elements) {
-      let element = elements[0];
+      // debugger
+      // let element = elements[0];
+      console.log(elements.forEach(function (element) {
+        let datasetTmp = myLine.data.datasets[element._datasetIndex];
+        console.log(datasetTmp.label);
+      }));
+      // let element = myLine.getElementsAtEventForMode(context, 'x', 1)[0]
+      // let element = myLine.getElementsAtXAxis(context)[0]
+      let element = myLine.getElementAtEvent(context)[0];
       let dataset = myLine.data.datasets[element._datasetIndex]
       let label = dataset.label;
-      debugger
       let date = dataset.data[element._index].x;
+
+      console.log(label);
+      console.log(date.format("YYYYMMDDHH00"));
       window.displayTweets(label, date.format("YYYYMMDDHH00"));
     },
     elements: {

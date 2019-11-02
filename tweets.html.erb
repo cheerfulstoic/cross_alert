@@ -1,0 +1,23 @@
+<% Dir.glob("*.csv").flat_map do |path| %>
+  <%
+    name, _rest = path.split('.').first
+    name = name.gsub(' ', '-')
+    data = CSV.parse(File.read(path))
+    grouped_data = data.group_by do |row|
+      datetime = DateTime.parse(row[2])
+      [
+        datetime.strftime("stamp-#{name}-%Y%m%d%H00"),
+        datetime.strftime("%Y-%m-%d %H:00"),
+      ]
+    end
+  %>
+
+  <% grouped_data.each do |(id, datetime_string), rows| %>
+    <div class="tweet-block" id="<%= id %>" style="display: none">
+      <%= datetime_string %>
+      <% rows.each do |id, _, _| %>
+        <div class="tweet" id="tweet" tweetId="<%= id %>"></div>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
