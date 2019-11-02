@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="css/Chart.css">
 
   <meta name="theme-color" content="#fafafa">
+  <script sync src="https://platform.twitter.com/widgets.js"></script>
 </head>
 
 <body>
@@ -54,6 +55,35 @@
     };
 
     var colorNames = Object.keys(window.chartColors);
+
+    var currentlyDisplayedBlock = null;
+    window.displayTweets = function (label, datetime) {
+      if (currentlyDisplayedBlock !== null) {
+        currentlyDisplayedBlock.style.display = 'none';
+      }
+      currentlyDisplayedBlock = document.getElementById("stamp-" + label + "-" + datetime);
+      console.log({currentlyDisplayedBlock: currentlyDisplayedBlock})
+      currentlyDisplayedBlock.style.display = 'block';
+
+      var tweets = document.querySelectorAll("#stamp-" + label + "-" + datetime + " .tweet");
+      Array.prototype.forEach.call(tweets, function (tweet) {
+        var id = tweet.getAttribute("tweetId");
+
+        twttr.widgets.createTweet(
+          id, tweet,
+          {
+            conversation : 'none',    // or all
+            cards        : 'hidden',  // or visible 
+            linkColor    : '#cc0000', // default is blue
+            theme        : 'light'    // or dark
+          })
+        .then (function (el) {
+          el.contentDocument.querySelector(".footer").style.display = "none";
+        });
+
+      });
+    }
+
   </script>
 
 
@@ -62,6 +92,7 @@
   <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.4.1.min.js"><\/script>')</script>
   <script src="js/plugins.js"></script>
   <script src="js/main.js"></script>
+
 
   <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
   <script>

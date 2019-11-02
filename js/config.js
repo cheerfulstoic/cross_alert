@@ -158,6 +158,14 @@ window.config = {
     legend: {
       position: 'bottom'
     },
+    onClick: function (context, elements) {
+      let element = elements[0];
+      let dataset = myLine.data.datasets[element._datasetIndex]
+      let label = dataset.label;
+      debugger
+      let date = dataset.data[element._index].x;
+      window.displayTweets(label, date.format("YYYYMMDDHH00"));
+    },
     elements: {
       point: {
         backgroundColor: function (context) {
@@ -186,7 +194,6 @@ window.config = {
 
             if (newXLabelDateTime != currentXLabelDateTime) {
               currentXLabelDateTime = newXLabelDateTime;
-              console.log({currentXLabelDateTime: currentXLabelDateTime})
               return(currentXLabelDateTime);
             }
           }
