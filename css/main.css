@@ -38,6 +38,29 @@ html {
 }
 
 /*
+ * Header
+ */
+.navbar {
+  background: #3A3E45;
+  margin-bottom: 150px;
+  /* padding-top: 13px; */
+   padding-left: 30px;
+  
+}
+ .navbar img {
+   width: 130px;
+   
+ }
+
+ .navbar h3 {
+   display: inline;
+   color: white;
+   font-family: sans-serif;
+ } 
+
+
+
+/*
  * A better looking default horizontal rule
  */
 
