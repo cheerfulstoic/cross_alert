@@ -144,7 +144,7 @@ window.config = {
   },
   options: {
     legend: {
-      position: 'bottom'
+     display: false
     },
     onClick: function (context, elements) {
       // debugger
