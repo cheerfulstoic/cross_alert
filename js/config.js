@@ -170,13 +170,13 @@ window.config = {
         },
         scaleLabel: {
           display: true,
-          labelString: 'Date'
+          labelString: 'Datum'
         }
       }],
       yAxes: [{
         scaleLabel: {
           display: true,
-          labelString: 'value'
+          labelString: 'Tweets per timme'
         }
       }]
     },
