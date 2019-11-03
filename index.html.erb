@@ -100,8 +100,9 @@
             cards        : 'hidden',  // or visible 
             linkColor    : '#cc0000', // default is blue
             theme        : 'light'    // or dark
-          });
-        window.location.hash = "#top-of-tweets";
+          }).then(function (el) {
+            window.location.hash = "#top-of-tweets";
+          })
 
       });
     }
@@ -125,30 +126,32 @@
   
   <a name="top-of-tweets"></a>
 
-  <% terms.flat_map do |name| %>
-    <%
-      path = "#{name}.json.csv"
-      name = name.gsub(' ', '-')
-      data = CSV.parse(File.read(path))
-      grouped_data = data.group_by do |row|
-        datetime = DateTime.parse(row[2])
-        [
-          datetime.strftime("stamp-#{name}-%Y%m%d%H00"),
-          name,
-          datetime.strftime("%Y-%m-%d %H:00"),
-        ]
-      end
-    %>
+  <div id="all-tweets">
+    <% terms.flat_map do |name| %>
+      <%
+        path = "#{name}.json.csv"
+        name = name.gsub(' ', '-')
+        data = CSV.parse(File.read(path))
+        grouped_data = data.group_by do |row|
+          datetime = DateTime.parse(row[2])
+          [
+            datetime.strftime("stamp-#{name}-%Y%m%d%H00"),
+            name,
+            datetime.strftime("%Y-%m-%d %H:00"),
+          ]
+        end
+      %>
 
-    <% grouped_data.each do |(id, name, datetime_string), rows| %>
-      <div class="tweet-block" id="<%= id %>" style="display: none">
-        <h1><%= name %> - <%= datetime_string %></h1>
-        <% rows.each do |id, _, _| %>
-          <div class="tweet" id="tweet" tweetId="<%= id %>"></div>
-        <% end %>
-      </div>
+      <% grouped_data.each do |(id, name, datetime_string), rows| %>
+        <div class="tweet-block" id="<%= id %>" style="display: none">
+          <h1><%= name %> - <%= datetime_string %></h1>
+          <% rows.each do |id, _, _| %>
+            <div class="tweet" id="tweet" tweetId="<%= id %>"></div>
+          <% end %>
+        </div>
+      <% end %>
     <% end %>
-  <% end %>
+  </div>
 
 </body>
 
