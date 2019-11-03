@@ -38,16 +38,9 @@
       </td>
       <td style="width: 25%">
         <ul>
-          <li>brand <a href="#">Ta bort</a>
-          <li>drunknat <a href="#">Ta bort</a>
-          <li>bomba <a href="#">Ta bort</a>
-          <li>skytten <a href="#">Ta bort</a>
-          <li>skjutning <a href="#">Ta bort</a>
-          <li>snökaos <a href="#">Ta bort</a>
-          <li>storm <a href="#">Ta bort</a>
-          <li>översvämning <a href="#">Ta bort</a>
-          <li>olycka <a href="#">Ta bort</a>
-          <li>polis <a href="#">Ta bort</a>
+          <% terms.each do |term| %>
+            <li><%= term %> <a href="#">Ta bort</a>
+          <% end %>
         </ul>
 
         <button>Lägg till sökord</button> 

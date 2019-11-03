@@ -19,7 +19,8 @@
       795548
     ]
 
-datetimes = Dir.glob("*.csv").flat_map do |path|
+datetimes = terms.flat_map do |name|
+  path = "#{name}.json.csv"
   rows = CSV.parse(File.read(path))
 
   rows.map do |row|
@@ -35,9 +36,8 @@ window.config = {
   data: {
     // labels: [<%= datetimes.join(',') %>],
     datasets: [
-      <% Dir.glob("*.csv").each_with_index do |path, index| %>
+      <% terms.each_with_index do |name, index| %>
         <%
-          name, _rest = path.split('.').first
           name = name.gsub(' ', '-')
         %>
         {
@@ -45,6 +45,7 @@ window.config = {
           fill: '#<%= colors[index] %>',
           data: [
               <%
+                path = "#{name}.json.csv"
                 data = CSV.parse(File.read(path))
                 grouped_data = data.group_by do |row|
                   DateTime.parse(row[2]).strftime("%Y-%m-%d %H:00")
@@ -91,7 +92,7 @@ window.config = {
       point: {
         backgroundColor: function (context) {
           let data = context.dataset.data[context.dataIndex]
-          if (data.y > 20) {
+          if (data.y > 30) {
             return(data.color)
           } else {
             return('#CCCCCC')
