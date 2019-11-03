@@ -5,8 +5,18 @@ to be ready to act in a situation of crisis even before police and other authori
 
 ## Installation
 
+Install Elixir and Ruby
+
+Run:
+
 ```
+  # To generate json files of tweets for search terms
+  mix dump_red_cross
 
+  # To convert outputted json files to csv
+  mix convert_red_cross
 
+  # To generate webpage details from csvs
+  ruby generate.rb
 ``` 
 
